@@ -1,6 +1,6 @@
 import {cart, addToCart} from '../data/cart.js';
-import {products} from '../data/products.js';
-import {formatCurrency} from "./utils/money.js";
+import products from '../data/products.js';
+import formatCurrency from "./utils/money.js";
 
 let productsHTML = "";
 
@@ -46,7 +46,7 @@ products.forEach(product => {
   
         <div class="product-spacer"></div>
   
-        <div class="added-to-cart js-added-to-cart">
+        <div class="added-to-cart js-added-to-cart-${product.id}">
           <img src="images/icons/checkmark.png">
           Added
         </div>
@@ -58,6 +58,8 @@ products.forEach(product => {
     `
 });
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
+
+updateCartQuantity()
 
 function updateCartQuantity () {
   let cartQuantity = 0;
