@@ -1,5 +1,5 @@
-import {addToCart, cart, removeFromCart, saveToStorage, updateDeliveryOption} from '../../data/cart.js';
-import { products, getProduct } from "../../data/products.js";
+import {cart, removeFromCart, saveToStorage, updateDeliveryOption} from '../../data/cart.js';
+import {getProduct } from "../../data/products.js";
 import formatCurrency from "../utils/money.js";
 import {calculateDeliveryDate, deliveryOptions, getDeliveryOptions} from '../../data/deliveryOptions.js'
 import {renderPaymentSummary} from "./paymentSummary.js";
@@ -26,7 +26,7 @@ export function renderOrderSummary () {
       </div>
 
       <div class="cart-item-details-grid">
-        <img class="product-image" src="${matchingProduct.image}">
+        <img class="product-image" src="${matchingProduct.image}" alt="">
 
         <div class="cart-item-details">
           <div class="product-name">
@@ -37,7 +37,7 @@ export function renderOrderSummary () {
           </div>
           <div class="product-quantity">
             <span>
-              Quantity: <span class="quantity-label js-quantity-label">${cartItem.quantity}</span>
+              Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
             </span>
             <span class="update-quantity-link link-primary js-update-quantity-link" data-product-id="${matchingProduct.id}">
               Update
@@ -93,12 +93,12 @@ export function renderOrderSummary () {
   document.querySelectorAll('.js-delete-quantity-link').forEach(link => {
     link.addEventListener('click', () => {
       const { productId } = link.dataset;
-      removeFromCart(productId);
+
       renderOrderSummary();
       renderPaymentSummary();
-
-      updateCartQuantity();
       saveToStorage();
+      removeFromCart(productId);
+      updateCartQuantity();
 
       document.querySelector(`.js-cart-item-container-${productId}`).remove();
     });
@@ -130,12 +130,12 @@ export function renderOrderSummary () {
         matchingItem.quantity ++;
       }
 
-      updateCartQuantity()
       saveToStorage();
       renderOrderSummary();
       renderPaymentSummary();
+      updateCartQuantity();
 
-      document.querySelector('.js-quantity-label').innerHTML = matchingItem.quantity;
+      document.querySelector(`.js-quantity-label-${productId}`).innerHTML = matchingItem.quantity;
     });
   });
 
