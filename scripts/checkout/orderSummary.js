@@ -18,10 +18,18 @@ export function renderOrderSummary() {
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
     const today = dayjs();
-    const deliveryDate = today.add(
+    let deliveryDate = today.add(
       deliveryOption.deliveryDays,
       'days'
     );
+
+    if (deliveryDate.format('dddd') === 'Saturday') {
+      deliveryDate = deliveryDate.add(2, 'days')
+    }
+    else if (deliveryDate.format('dddd') === 'Sunday') {
+      deliveryDate = deliveryDate.add(1, 'days')
+    }
+
     const dateString = deliveryDate.format(
       'dddd, MMMM D'
     );
@@ -77,10 +85,18 @@ export function renderOrderSummary() {
 
     deliveryOptions.forEach((deliveryOption) => {
       const today = dayjs();
-      const deliveryDate = today.add(
+      let deliveryDate = today.add(
         deliveryOption.deliveryDays,
         'days'
       );
+
+      if (deliveryDate.format('dddd') === 'Saturday') {
+        deliveryDate = deliveryDate.add(2, 'days')
+      }
+      else if (deliveryDate.format('dddd') === 'Sunday') {
+        deliveryDate = deliveryDate.add(1, 'days')
+      }
+
       const dateString = deliveryDate.format(
         'dddd, MMMM D'
       );
